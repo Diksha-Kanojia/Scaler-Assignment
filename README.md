@@ -104,25 +104,6 @@ Using a combination of:
 - React state-based animations
 - CSS transforms for performance
 
-## Future Enhancements
-
-1. **Feature Additions**
-   - Drag and drop event management
-   - Multiple calendar support
-   - Advanced recurring event patterns
-   - Calendar sharing and permissions
-
-2. **Technical Improvements**
-   - Implementation of Redux for state management
-   - Enhanced error handling
-   - Offline support
-   - Performance optimizations
-
-3. **UI/UX Enhancements**
-   - More fluid animations
-   - Dark mode support
-   - Custom theme options
-   - Mobile-first responsive design
 
 ## Contributing
 
