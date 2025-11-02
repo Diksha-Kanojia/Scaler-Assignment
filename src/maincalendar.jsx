@@ -315,8 +315,8 @@ const DayView = ({ currentDate, hours, formatHour, isToday, events, onEventClick
     const duration = endMinutes - startMinutes
     
     return {
-      top: `${(startMinutes / 60) * 64}px`,
-      height: `${(duration / 60) * 64}px`
+      top: `${(startMinutes / 60) * 48}px`,
+      height: `${(duration / 60) * 48}px`
     }
   }
 
