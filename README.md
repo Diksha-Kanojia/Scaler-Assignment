@@ -17,15 +17,15 @@ A high-fidelity clone of Google Calendar built as part of a fullstack developmen
 ## Features
 
 ### Current Implementation
-- 🔐 Google Authentication
-- 📅 Calendar Views
+-  Google Authentication
+-  Calendar Views
   - Weekly view implementation
   - Month and Day views (planned)
-- ✨ Event Management
+-  Event Management
   - Create new events with detailed modal
   - Support for event title, date, time, guests, location, and description
   - Event types: Regular events, Tasks, and Appointment schedules
-- 🎨 UI Components
+-  UI Components
   - Create button with dropdown
   - Left sidebar for navigation
   - Main calendar grid
