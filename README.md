@@ -20,26 +20,18 @@ A high-fidelity clone of Google Calendar built as part of a fullstack developmen
 ### Current Implementation
 -  Google Authentication
 -  Calendar Views
-  - Weekly view implementation
-  - Month and Day views (planned)
+  - Weekly, Month and Day views 
 -  Event Management
   - Create new events with detailed modal
   - Support for event title, date, time, guests, location, and description
   - Event types: Regular events, Tasks, and Appointment schedules
   - Event editing and deletion
   - Handling recurring events
--  UI Components
-  - Create button with dropdown
-  - Left sidebar for navigation
-  - Main calendar grid
-  - Interactive event modal
-
+  
 
 ### Planned Features
 
 - Calendar sharing and collaboration
-- Mobile responsive design
-- Drag and drop event management
 - Multiple calendar support
 - Calendar import/export
 
