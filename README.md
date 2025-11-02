@@ -1,4 +1,4 @@
-##Diksha Kanojia - e22cseu0493@bennett.edu.in
+## Diksha Kanojia - e22cseu0493@bennett.edu.in
 # Google Calendar Clone
 
 A high-fidelity clone of Google Calendar built as part of a fullstack development assignment. This project implements core Google Calendar functionalities with a focus on delivering a highly interactive and visually accurate user experience.
