@@ -1,3 +1,4 @@
+## Diksha Kanojia - e22cseu0493@bennett.edu.in
 # Google Calendar Clone
 
 A high-fidelity clone of Google Calendar built as part of a fullstack development assignment. This project implements core Google Calendar functionalities with a focus on delivering a highly interactive and visually accurate user experience.
@@ -19,42 +20,20 @@ A high-fidelity clone of Google Calendar built as part of a fullstack developmen
 ### Current Implementation
 -  Google Authentication
 -  Calendar Views
-  - Weekly view implementation
-  - Month and Day views (planned)
+  - Weekly, Month and Day views 
 -  Event Management
   - Create new events with detailed modal
   - Support for event title, date, time, guests, location, and description
   - Event types: Regular events, Tasks, and Appointment schedules
--  UI Components
-  - Create button with dropdown
-  - Left sidebar for navigation
-  - Main calendar grid
-  - Interactive event modal
+  - Event editing and deletion
+  - Handling recurring events
+  
 
 ### Planned Features
-- Event editing and deletion
-- Recurring events
+
 - Calendar sharing and collaboration
-- Mobile responsive design
-- Drag and drop event management
 - Multiple calendar support
 - Calendar import/export
-
-## Project Structure
-
-```
-my-app/
-├── src/
-│   ├── App.jsx              # Main application component
-│   ├── AuthCallback.jsx     # Handle authentication callbacks
-│   ├── Calendar.jsx         # Calendar wrapper component
-│   ├── createbtn.jsx        # Create event button component
-│   ├── eventmodal.jsx       # Event creation/editing modal
-│   ├── landingPage.jsx      # Initial landing/login page
-│   ├── maincalendar.jsx     # Main calendar grid component
-│   ├── sidebar.jsx          # Left navigation sidebar
-│   └── supabaseClient.js    # Supabase configuration
-```
 
 ## Installation and Setup
 
@@ -125,25 +104,6 @@ Using a combination of:
 - React state-based animations
 - CSS transforms for performance
 
-## Future Enhancements
-
-1. **Feature Additions**
-   - Drag and drop event management
-   - Multiple calendar support
-   - Advanced recurring event patterns
-   - Calendar sharing and permissions
-
-2. **Technical Improvements**
-   - Implementation of Redux for state management
-   - Enhanced error handling
-   - Offline support
-   - Performance optimizations
-
-3. **UI/UX Enhancements**
-   - More fluid animations
-   - Dark mode support
-   - Custom theme options
-   - Mobile-first responsive design
 
 ## Contributing
 
