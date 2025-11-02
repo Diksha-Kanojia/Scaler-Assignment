@@ -11,7 +11,6 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// Assuming you have this file for Supabase setup
 import { supabase } from './supabaseClient';
 
 // ========================== CURRENT TIME INDICATOR COMPONENT =============================
@@ -24,11 +23,11 @@ const CurrentTimeIndicator = () => {
       const hours = now.getHours();
       const minutes = now.getMinutes();
       const totalMinutes = hours * 60 + minutes;
-      setPosition((totalMinutes / 60) * 48); // 64px per hour
+      setPosition((totalMinutes / 60) * 48); // 48px per hour
     };
 
     updatePosition();
-    const interval = setInterval(updatePosition, 60000); // Update every minute
+    const interval = setInterval(updatePosition, 60000);
 
     return () => clearInterval(interval);
   }, []);
@@ -47,11 +46,9 @@ const CurrentTimeIndicator = () => {
 };
 
 // ========================== HELPER FUNCTION: EVENT LAYOUT CALCULATION =============================
-// Helper function to detect overlapping events
 const calculateEventLayout = (events) => {
   if (!events || events.length === 0) return [];
 
-  // Sort events by start time
   const sortedEvents = [...events].sort((a, b) => {
     if (!a.start_time || !b.start_time) return 0;
     return a.start_time.localeCompare(b.start_time);
@@ -68,7 +65,6 @@ const calculateEventLayout = (events) => {
     const start = startHour * 60 + startMin;
     const end = endHour * 60 + endMin;
 
-    // Find the first column where this event doesn't overlap
     let columnIndex = 0;
     while (columnIndex < columns.length) {
       const column = columns[columnIndex];
@@ -84,11 +80,9 @@ const calculateEventLayout = (events) => {
       columnIndex++;
     }
 
-    // Add to column
     if (!columns[columnIndex]) columns[columnIndex] = [];
     columns[columnIndex].push(event);
 
-    // Find max overlapping events at this time
     let maxOverlap = 1;
     columns.forEach(col => {
       const overlapping = col.filter(e => {
@@ -108,7 +102,6 @@ const calculateEventLayout = (events) => {
     });
   });
 
-  // Update totalColumns for all events
   return eventLayouts.map(layout => {
     const start = layout.event.start_time.split(':').map(Number);
     const startMin = start[0] * 60 + start[1];
@@ -133,19 +126,16 @@ const calculateEventLayout = (events) => {
 };
 
 // ========================== INLINE SEARCH BOX COMPONENT =============================
-
 const SearchBox = ({ onClose }) => {
   const [showFilters, setShowFilters] = useState(false);
   const [searchIn, setSearchIn] = useState('Active calendars');
 
   const handleSearch = () => {
-    // Implement your actual search logic here
     console.log('Performing search...');
     setShowFilters(false);
   };
 
   const handleReset = () => {
-    // Reset all form fields (in a real implementation)
     setSearchIn('Active calendars');
     console.log('Resetting search criteria...');
   };
@@ -180,12 +170,9 @@ const SearchBox = ({ onClose }) => {
             <Search size={20} />
         </button>
 
-        {/* Filter Dropdown Content */}
         {showFilters && (
             <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-lg shadow-xl border z-30 p-4" style={{ width: '400px' }}>
                 <div className="space-y-4">
-                    
-                    {/* Search In Dropdown */}
                     <div className="flex items-center">
                         <label className="w-1/4 text-xs text-gray-700 font-medium whitespace-nowrap">Search in</label>
                         <div className="w-3/4 relative">
@@ -202,7 +189,6 @@ const SearchBox = ({ onClose }) => {
                         </div>
                     </div>
 
-                    {/* Text Input Fields */}
                     {[
                         { label: 'What', placeholder: 'Keywords contained in event' },
                         { label: 'Who', placeholder: 'Enter a participant, organizer, or creator' },
@@ -219,7 +205,6 @@ const SearchBox = ({ onClose }) => {
                         </div>
                     ))}
 
-                    {/* Date Range */}
                     <div className="flex items-center">
                         <label className="w-1/4 text-xs text-gray-700 font-medium">Date</label>
                         <div className="w-3/4 flex space-x-2">
@@ -236,7 +221,6 @@ const SearchBox = ({ onClose }) => {
                         </div>
                     </div>
 
-                    {/* Footer Buttons */}
                     <div className="flex justify-end pt-2 space-x-4">
                         <button 
                             onClick={handleReset}
@@ -258,12 +242,11 @@ const SearchBox = ({ onClose }) => {
   );
 };
 
-
 // ========================== EVENT BLOCK COMPONENT =========================
 const EventBlock = ({ event, style, onClick, column = 0, totalColumns = 1 }) => {
   const getEventIcon = (type) => {
     if (type === 'task') return '☑'
-    if (type === 'appointment') return '🕒'
+    if (type === 'appointment') return '🕐'
     return ''
   }
 
@@ -321,8 +304,6 @@ const DayView = ({ currentDate, hours, formatHour, isToday, events, onEventClick
   }
 
   const showCurrentTime = isToday(currentDate);
-
-  // Calculate layouts for overlapping events
   const eventLayouts = calculateEventLayout(dayEvents.filter(e => !e.all_day));
 
   return (
@@ -336,35 +317,42 @@ const DayView = ({ currentDate, hours, formatHour, isToday, events, onEventClick
         ))}
       </div>
       <div className="flex-1 relative">
+        {/* Header */}
         <div className="h-12 border-b flex items-center justify-center">
           <div className="text-center">
             <div className="text-xs text-blue-600 font-medium">{dayNames[currentDate.getDay()].slice(0, 3).toUpperCase()}</div>
             <div className={`text-2xl font-normal mt-1 ${isToday(currentDate) ? 'bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center mx-auto' : ''}`}>{currentDate.getDate()}</div>
           </div>
         </div>
+        
+        {/* Time Grid Container */}
         <div className="relative">
+          {/* Hour rows */}
           {hours.map((hour) => (
             <div key={hour} className="h-12 border-b border-gray-200 hover:bg-gray-50 cursor-pointer" />
           ))}
           
-          {/* Current time indicator */}
-          {showCurrentTime && <CurrentTimeIndicator />}
-          
-          {/* Render events with overlap handling */}
-          {eventLayouts.map((layout) => {
-            const position = getEventPosition(layout.event)
-            if (!position) return null
-            return (
-              <EventBlock 
-                key={layout.event.id} 
-                event={layout.event} 
-                style={position} 
-                onClick={onEventClick}
-                column={layout.column}
-                totalColumns={layout.totalColumns}
-              />
-            )
-          })}
+          {/* Events Container - positioned absolutely relative to time grid */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="relative w-full h-full pointer-events-auto">
+              {showCurrentTime && <CurrentTimeIndicator />}
+              
+              {eventLayouts.map((layout) => {
+                const position = getEventPosition(layout.event)
+                if (!position) return null
+                return (
+                  <EventBlock 
+                    key={layout.event.id} 
+                    event={layout.event} 
+                    style={position} 
+                    onClick={onEventClick}
+                    column={layout.column}
+                    totalColumns={layout.totalColumns}
+                  />
+                )
+              })}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -395,8 +383,8 @@ const WeekView = ({ getWeekDates, hours, formatHour, isToday, dayNamesShort, eve
     const duration = endMinutes - startMinutes
     
     return {
-      top: `${(startMinutes / 60) * 64}px`,
-      height: `${(duration / 60) * 64}px`
+      top: `${(startMinutes / 60) * 48}px`,
+      height: `${(duration / 60) * 48}px`
     }
   }
 
@@ -418,33 +406,40 @@ const WeekView = ({ getWeekDates, hours, formatHour, isToday, dayNamesShort, eve
           
           return (
             <div key={i} className="border-r last:border-r-0 relative">
+              {/* Header */}
               <div className="h-20 border-b flex flex-col items-center justify-center">
                 <div className="text-xs text-gray-600 mb-1">{dayNamesShort[i]}</div>
                 <div className={`text-2xl font-normal ${isToday(date) ? 'bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center' : ''}`}>{date.getDate()}</div>
               </div>
+              
+              {/* Time Grid Container */}
               <div className="relative">
+                {/* Hour rows */}
                 {hours.map((hour) => (
                   <div key={hour} className="h-12 border-b border-gray-200 hover:bg-gray-50 cursor-pointer" />
                 ))}
                 
-                {/* Current time indicator */}
-                {showCurrentTime && <CurrentTimeIndicator />}
-                
-                {/* Render events with overlap handling */}
-                {eventLayouts.map((layout) => {
-                  const position = getEventPosition(layout.event)
-                  if (!position) return null
-                  return (
-                    <EventBlock 
-                      key={layout.event.id} 
-                      event={layout.event} 
-                      style={position} 
-                      onClick={onEventClick}
-                      column={layout.column}
-                      totalColumns={layout.totalColumns}
-                    />
-                  )
-                })}
+                {/* Events Container - positioned absolutely relative to time grid */}
+                <div className="absolute inset-0 pointer-events-none">
+                  <div className="relative w-full h-full pointer-events-auto">
+                    {showCurrentTime && <CurrentTimeIndicator />}
+                    
+                    {eventLayouts.map((layout) => {
+                      const position = getEventPosition(layout.event)
+                      if (!position) return null
+                      return (
+                        <EventBlock 
+                          key={layout.event.id} 
+                          event={layout.event} 
+                          style={position} 
+                          onClick={onEventClick}
+                          column={layout.column}
+                          totalColumns={layout.totalColumns}
+                        />
+                      )
+                    })}
+                  </div>
+                </div>
               </div>
             </div>
           )
@@ -499,7 +494,7 @@ const MonthView = ({ getMonthDates, isToday, dayNamesShort, events, onEventClick
                         title={event.title}
                       >
                         {event.type === 'task' && '☑ '}
-                        {event.type === 'appointment' && '🕒 '}
+                        {event.type === 'appointment' && '🕐 '}
                         {event.title}
                       </div>
                     ))}
@@ -521,12 +516,10 @@ const MonthView = ({ getMonthDates, isToday, dayNamesShort, events, onEventClick
 function CalendarPage({ currentDate, onDateChange, viewType, onViewTypeChange, events, user: userProp, onEventClick }) {
   const [user, setUser] = useState(userProp)
   const [showUserMenu, setShowUserMenu] = useState(false)
-  // **State to control the visibility of the INLINE Search Bar/Dropdown**
   const [showSearch, setShowSearch] = useState(false) 
   const [showViewDropdown, setShowViewDropdown] = useState(false)
   const navigate = useNavigate()
 
-  // check user session if not provided
   useEffect(() => {
     if (!userProp) {
       supabase.auth.getSession().then(({ data: { session } }) => {
@@ -564,7 +557,6 @@ function CalendarPage({ currentDate, onDateChange, viewType, onViewTypeChange, e
       </div>
     )
 
-  // ============== Helper Data and Functions ==============
   const monthNames = [
     'January','February','March','April','May','June',
     'July','August','September','October','November','December'
@@ -661,20 +653,16 @@ function CalendarPage({ currentDate, onDateChange, viewType, onViewTypeChange, e
     )
   }
 
-  // ==================== JSX ======================
   return (
     <div className="flex-1 flex flex-col bg-white h-screen">
       {/* Header */}
       <div className="flex items-center justify-between px-6 py-3 border-b relative">
         
-        {/* Conditional Rendering: Show SearchBox OR Standard Controls */}
         {showSearch ? (
-          // Search Box Mode
           <div className="flex-1 mr-4">
             <SearchBox onClose={() => setShowSearch(false)} />
           </div>
         ) : (
-          // Standard Controls Mode
           <div className="flex items-center gap-4">
             <button onClick={handleToday} className="px-4 py-2 border border-gray-300 rounded-full hover:bg-gray-50 text-sm font-medium">
               Today
@@ -691,10 +679,7 @@ function CalendarPage({ currentDate, onDateChange, viewType, onViewTypeChange, e
           </div>
         )}
 
-        {/* Top right controls (Always visible, adjusted for layout change) */}
         <div className="flex items-center gap-2">
-          
-          {/* Search Button (Hidden when search is active, or serves to activate it) */}
           {!showSearch && (
             <button onClick={() => setShowSearch(true)} className="p-2 hover:bg-gray-100 rounded-full">
               <Search size={20} className="text-gray-600" />
@@ -704,7 +689,6 @@ function CalendarPage({ currentDate, onDateChange, viewType, onViewTypeChange, e
           <button className="p-2 hover:bg-gray-100 rounded-full"><HelpCircle size={20} /></button>
           <button className="p-2 hover:bg-gray-100 rounded-full"><Settings size={20} /></button>
 
-          {/* View Type Dropdown */}
           <div className="relative">
             <button onClick={() => setShowViewDropdown(!showViewDropdown)} className="px-4 py-2 border border-gray-300 rounded-full flex items-center gap-2 capitalize text-sm">
               {viewType}
@@ -730,7 +714,6 @@ function CalendarPage({ currentDate, onDateChange, viewType, onViewTypeChange, e
           <button className="p-2 hover:bg-gray-100 rounded-full"><CheckCircle size={20} /></button>
           <button className="p-2 hover:bg-gray-100 rounded-full"><Grid3x3 size={20} /></button>
 
-          {/* User Menu */}
           <div className="ml-auto relative">
             <button
               onClick={() => setShowUserMenu(!showUserMenu)}
